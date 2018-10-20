@@ -1,28 +1,42 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './index.css';
+import animal from './animal.svg';
+import React, {Component} from 'react'
+import {Container} from "reactstrap";
+import SearchInput, {createFilter} from 'react-search-input'
+import emails from './mails'
+import SearchField from 'react-search-field'
+
+const KEYS_TO_FILTERS = ['user.name', 'subject', 'dest.name']
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            searchTerm: ''
+        }
+        this.searchUpdated = this.searchUpdated.bind(this)
+    }
+
+    render() {
+        const filteredEmails = emails.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
+
+        return (
+            <div>
+
+                <SearchField
+                    placeholder="Search..."
+                    onEnter={this.searchUpdated}
+                    onSearchClick={this.searchUpdated}
+                    searchText="Search item..."
+                />
+            </div>
+        )
+    }
+
+    searchUpdated(term) {
+        this.setState({searchTerm: term})
+    }
 }
 
 export default App;
