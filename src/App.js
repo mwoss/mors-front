@@ -22,15 +22,30 @@ class App extends Component {
         const filteredEmails = emails.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
 
         return (
-            <div>
-
-                <SearchField
-                    placeholder="Search..."
-                    onEnter={this.searchUpdated}
-                    onSearchClick={this.searchUpdated}
-                    searchText="Search item..."
-                />
-            </div>
+            <Container>
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: '50px',
+                }}>
+                <img src={animal} style={{width: 80, height: 80}} className="search-logo"
+                         alt="logo"/>
+                </div>
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: '10px',
+                }}>
+                    <SearchField
+                        placeholder="Search..."
+                        onEnter={this.searchUpdated}
+                        onSearchClick={this.searchUpdated}
+                        searchText="Search item..."
+                    />
+                </div>
+            </Container>
         )
     }
 
