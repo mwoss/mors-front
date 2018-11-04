@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import './CSS/sites.css';
-class Sites extends Component {
+
+class SEO extends Component {
     render() {
         const rows = [];
         this.props.data.forEach((site) => {
@@ -8,7 +8,6 @@ class Sites extends Component {
         });
         return <div> {rows}</div>
     }
-
 }
 
-export default Sites;
+export default SEO;
