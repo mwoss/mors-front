@@ -7,25 +7,29 @@ import animal from '../../assets/images/animal.svg';
 
 const Search = Input.Search;
 
+const searchLogo = {
+    width: '100px',
+    height: '100px',
+};
+
+const searchDiv = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: '8vh'
+};
+
 class SearchNav extends Component {
     render() {
-
         return (
             <Container>
-                <div className="center-content">
-                    <img src={animal} className="search-logo" alt="logo"/>
+                <div style={searchDiv}>
+                    <img src={animal} style={searchLogo} alt="logo"/>
+                    <Search placeholder="Search..." onSearch={(term) => this.searchUpdated(term)}/>
                 </div>
-                <Search placeholder="Search..." onSearch={(term) => this.searchUpdated(term)}/>
             </Container>
         )
-    }
-
-    searchUpdated = (term) => {
-        const fetch_url = API_BASE_URL + "/api/search?query=" + term;
-        fetch(fetch_url)
-            .then(response => response.json())
-            .then(data => console.log(data))
-        // .catch(err => console.log('Error', err))
     }
 }
 

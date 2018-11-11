@@ -3,15 +3,19 @@ import {Route, withRouter, Switch} from 'react-router-dom';
 
 import Search from "./components/search/Search"
 import SEO from "./components/seo/SEO";
+import Footer from "./components/common/Footer";
 
 
 class App extends Component {
     render() {
         return (
-            <Switch>
-                <Route exact path="/" component={Search}/>
-                <Route exact path="/seo" component={SEO}/>
-            </Switch>
+            <div id="app">
+                <Switch>
+                    <Route exact path="/" component={Search}/>
+                    <Route exact path="/seo" component={SEO}/>
+                </Switch>
+                <Footer/>
+            </div>
         )
     }
 }

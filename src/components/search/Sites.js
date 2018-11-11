@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import '../../assets/styles/sites.css';
+
 class Sites extends Component {
     render() {
         const rows = [];
