@@ -1,9 +1,13 @@
-html {
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
- }
+html, body, #root {
+    width: 100%;
+    height: 100%;
+}
 
-body {
-  margin: 0;
-  box-shadow: inset 0 0 12rem rgba(0, 0, 0, .35);
+#root {
+    box-shadow: inset 0 0 10rem rgba(0, 0, 0, .25);
+    overflow: auto;
+}
+
+.app-content{
+    margin-top: 9vh;
 }

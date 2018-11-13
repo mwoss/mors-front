@@ -1,23 +1,43 @@
 import React, {Component} from 'react'
+import {Container} from "reactstrap";
+import {getSearchResult} from "../../utils/APIUtils"
 
 import SearchNav from "./SearchNav";
-import {API_BASE_URL} from "../../constants/constants";
+import Sites from "./Site";
+
+import '../../assets/styles/search/search.css';
 
 class Search extends Component {
+    state = {
+        urls: [],
+        query: ''
+    };
+
     render() {
         return (
-            <div className="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-                <SearchNav/>
-            </div>
+            <Container>
+                <SearchNav onSearch={this.search}/>
+                {this.state.query &&
+                <h4 className="header">Search results for query: {this.state.query}</h4>}
+                <div className="links">
+                    {this.state.urls.map((url, index) => (
+                        <Sites key={index} site={url}/>
+                    ))}
+                </div>
+            </Container>
         )
     }
 
-    searchUpdated = (term) => {
-        const fetch_url = API_BASE_URL + "/api/search?query=" + term;
-        fetch(fetch_url)
-            .then(response => response.json())
-            .then(data => console.log(data))
-        // .catch(err => console.log('Error', err))
+    search = (term) => {
+        if (term) {
+            getSearchResult(term)
+                .then(data => this.setState({
+                        query: data.query,
+                        urls: data.result.map(e => e[0])
+                    })
+                )
+                .catch(err => console.log('Error', err))
+        }
     }
 }
 
