@@ -140,7 +140,7 @@ class Register extends Component {
             </div>
         );
     }
-    
+
     validateUsernameAvailability = () => {
         const usernameValue = this.state.username.value;
         const usernameValidation = validateUsername(usernameValue);
