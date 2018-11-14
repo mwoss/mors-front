@@ -34,8 +34,8 @@ class NavBar extends Component {
                 <Menu.Item key="/login">
                     <Link to="/login">Login</Link>
                 </Menu.Item>,
-                <Menu.Item key="/signup">
-                    <Link to="/signup">Signup</Link>
+                <Menu.Item key="/register">
+                    <Link to="/register">Signup</Link>
                 </Menu.Item>
             ];
         }

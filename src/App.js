@@ -8,6 +8,7 @@ import {notification} from 'antd';
 import Search from "./components/search/Search"
 import SEO from "./components/seo/SEO";
 import Login from "./components/auth/Login";
+import Register from "./components/auth/Register"
 import Footer from "./components/common/Footer";
 import LoadingIndicator from "./components/common/LoadingIndicator";
 import NotFound from "./components/common/NotFound";
@@ -80,6 +81,7 @@ class App extends Component {
                 <div className="app-content">
                     <Switch>
                         <Route exact path="/" component={Search}/>
+                        <Route path="/register" component={Register}/>
                         <Route path="/login" render={(props) => <Login onLogin={this.handleLogin} {...props}/>}/>
                         <Route exact path="/seo" component={SEO}/>
                         <Route component={NotFound}/>
