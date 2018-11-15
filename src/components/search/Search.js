@@ -6,19 +6,21 @@ import SearchNav from "./SearchNav";
 import Sites from "./Site";
 
 import '../../assets/styles/search/search.css';
+import LoadingIndicator from "../common/LoadingIndicator";
 
 class Search extends Component {
     state = {
         urls: [],
-        query: ''
+        query: '',
+        isLoading: false
     };
 
     render() {
         return (
             <Container>
                 <SearchNav onSearch={this.search}/>
-                {this.state.query &&
-                <h4 className="header">Search results for query: {this.state.query}</h4>}
+                {this.state.query && <h4 className="header">Search results for query: {this.state.query}</h4>}
+                {this.state.isLoading && <LoadingIndicator/>}
                 <div className="links">
                     {this.state.urls.map((url, index) => (
                         <Sites key={index} site={url}/>
@@ -30,10 +32,12 @@ class Search extends Component {
 
     search = (term) => {
         if (term) {
+            this.setState({isLoading: true});
             getSearchResult(term)
                 .then(data => this.setState({
                         query: data.query,
-                        urls: data.result.map(e => e[0])
+                        urls: data.result.map(e => e[0]),
+                        isLoading: false
                     })
                 )
                 .catch(err => console.log('Error', err))

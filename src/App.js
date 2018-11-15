@@ -71,7 +71,7 @@ class App extends Component {
 
     render() {
         if (this.state.isLoading) {
-            return <LoadingIndicator/>
+            return <LoadingIndicator/>;
         }
         return (
             <React.Fragment>
