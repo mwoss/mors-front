@@ -7,19 +7,19 @@ import '../../assets/styles/common/navbar.css';
 const Header = Layout.Header;
 
 class NavBar extends Component {
-    handleMenuClick({key}) {
+    handleMenuClick = ({key}) =>{
         if (key === "logout") {
             this.props.onLogout();
         }
-    }
+    };
 
     render() {
         let menuItems;
         if (this.props.currentUser) {
             menuItems = [
                 // TODO: logged user should do sth sth
-                <Menu.Item key="/">
-                    <Link to="/">
+                <Menu.Item key="/seo">
+                    <Link to="/seo">
                         <Icon type="home" className="nav-icon"/>
                     </Link>
                 </Menu.Item>,
@@ -69,7 +69,7 @@ const ProfileDropdownMenu = (props) => {
             </Menu.Item>
             <Menu.Divider/>
             <Menu.Item key="profile" className="dropdown-item">
-                <Link to={`#`}>Profile</Link>
+                <Link to={`/users/${props.currentUser.username}`}>Profile</Link>
             </Menu.Item>
             <Menu.Item key="logout" className="dropdown-item">
                 Logout

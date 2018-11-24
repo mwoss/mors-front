@@ -1,6 +1,4 @@
 import {
-    NAME_MAX_LENGTH,
-    NAME_MIN_LENGTH,
     PASSWORD_MAX_LENGTH,
     PASSWORD_MIN_LENGTH,
     USERNAME_MAX_LENGTH,
@@ -11,12 +9,12 @@ export const validateFiled = (filedName, min_len, max_len) => {
     if (filedName.length < min_len) {
         return {
             validateStatus: 'error',
-            errorMsg: `Name is too short (Minimum ${NAME_MIN_LENGTH} characters needed.)`
+            errorMsg: `Name is too short (Minimum ${min_len} characters needed.)`
         }
     } else if (filedName.length > max_len) {
         return {
             validationStatus: 'error',
-            errorMsg: `Name is too long (Maximum ${NAME_MAX_LENGTH} characters allowed.)`
+            errorMsg: `Name is too long (Maximum ${max_len} characters allowed.)`
         }
     } else {
         return {
@@ -26,16 +24,12 @@ export const validateFiled = (filedName, min_len, max_len) => {
     }
 };
 
-export const validateName = (name) => {
-    return this.validateFiled(name, NAME_MIN_LENGTH, NAME_MAX_LENGTH)
-};
-
 export const validateUsername = (username) => {
-    return this.validateFiled(username, USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH)
+    return validateFiled(username, USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH)
 };
 
 export const validatePassword = (password) => {
-    return this.validateFiled(password, PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH)
+    return validateFiled(password, PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH)
 };
 
 export const validateEmail = (email) => {
@@ -52,7 +46,7 @@ export const validateEmail = (email) => {
         }
     }
     return {
-        validateStatus: null,
+        validateStatus: "success",
         errorMsg: null
     }
 };

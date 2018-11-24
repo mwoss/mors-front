@@ -1,4 +1,4 @@
-import {API_BASE_URL, ACCESS_TOKEN} from '../constants/constants';
+import {API_BASE_URL, API_VERSION, ACCESS_TOKEN} from '../constants/constants';
 
 const request = (options) => {
     const headers = new Headers({
@@ -6,26 +6,30 @@ const request = (options) => {
     });
 
     if (localStorage.getItem(ACCESS_TOKEN)) {
-        headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
+        headers.append('Authorization', 'Token ' + localStorage.getItem(ACCESS_TOKEN))
     }
 
     const defaults = {headers: headers};
     options = Object.assign({}, defaults, options);
 
-    return fetch(options.url, options)
-        .then(response =>
-            response.json().then(json => {
-                if (!response.ok) {
-                    return Promise.reject(json);
-                }
-                return json;
-            })
-        );
+    try {
+        return fetch(options.url, options)
+            .then(response =>
+                response.json().then(json => {
+                    if (!response.ok) {
+                        return Promise.reject(json);
+                    }
+                    return json;
+                })
+            );
+    } catch (e) {
+        return e;
+    }
 };
 
 export function getSearchResult(term) {
     return request({
-        url: API_BASE_URL + "/api/search?query=" + term,
+        url: API_BASE_URL + API_VERSION + "/search?query=" + term,
         method: 'GET'
     });
 }
@@ -33,34 +37,27 @@ export function getSearchResult(term) {
 
 export function login(loginRequest) {
     return request({
-        url: API_BASE_URL + "/auth/signin",
+        url: API_BASE_URL + API_VERSION + "/auth/login/",
         method: 'POST',
         body: JSON.stringify(loginRequest)
     });
 }
 
-export function signup(signupRequest) {
+export function register(signupRequest) {
     return request({
-        url: API_BASE_URL + "/auth/signup",
+        url: API_BASE_URL + API_VERSION + "/auth/register/",
         method: 'POST',
         body: JSON.stringify(signupRequest)
     });
 }
 
-export function checkUsernameAvailability(username) {
+export function logout(logoutRequest) {
     return request({
-        url: API_BASE_URL + "/user/checkUsernameAvailability?username=" + username,
-        method: 'GET'
+        url: API_BASE_URL + API_VERSION + "/auth/logout/",
+        method: 'POST',
+        body: JSON.stringify(logoutRequest)
     });
 }
-
-export function checkEmailAvailability(email) {
-    return request({
-        url: API_BASE_URL + "/user/checkEmailAvailability?email=" + email,
-        method: 'GET'
-    });
-}
-
 
 export function getCurrentUser() {
     if (!localStorage.getItem(ACCESS_TOKEN)) {
@@ -68,14 +65,14 @@ export function getCurrentUser() {
     }
 
     return request({
-        url: API_BASE_URL + "/user/me",
+        url: API_BASE_URL + API_VERSION + "/auth/user/",
         method: 'GET'
     });
 }
 
 export function getUserProfile(username) {
     return request({
-        url: API_BASE_URL + "/users/" + username,
+        url: API_BASE_URL + API_VERSION + "/users/" + username,
         method: 'GET'
     });
 }

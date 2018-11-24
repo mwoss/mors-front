@@ -1,12 +1,13 @@
 import React, {Component} from 'react'
 import {Route, withRouter, Switch} from 'react-router-dom';
-import {getCurrentUser} from "./utils/APIUtils";
+import {getCurrentUser, logout} from "./utils/APIUtils";
 import {ACCESS_TOKEN} from "./constants/constants";
 import {notification} from 'antd';
 
 
 import Search from "./components/search/Search"
 import SEO from "./components/seo/SEO";
+import Profile from "./components/auth/Profile"
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register"
 import Footer from "./components/common/Footer";
@@ -44,30 +45,39 @@ class App extends Component {
         });
     };
 
-    handleLogin() {
+    handleLogin = () => {
         notification.success({
             message: 'MORS browser',
             description: "You're successfully logged in.",
         });
         this.loadCurrentUser();
         this.props.history.push("/seo");
-    }
+    };
 
-    handleLogout(redirectTo = "/seo", notificationType = "success", description = "You're successfully logged out.") {
-        localStorage.removeItem(ACCESS_TOKEN);
+    handleLogout = () => {
+        const redirectTo = "/"
+        const notificationType = "success"
+        const logoutRequest = {key: ACCESS_TOKEN};
+        logout(logoutRequest)
+            .then(response => {
+                localStorage.removeItem(ACCESS_TOKEN);
+                this.setState({
+                    currentUser: null,
+                    isAuthenticated: false
+                });
+                this.props.history.push(redirectTo);
 
-        this.setState({
-            currentUser: null,
-            isAuthenticated: false
+                notification[notificationType]({
+                    message: 'Mors SEO',
+                    description: response.detail,
+                });
+            }).catch(error => {
+            notification.error({
+                message: 'Mors SEO',
+                description: error.message || 'Sorry! Something went wrong. Please try again!'
+            });
         });
-
-        this.props.history.push(redirectTo);
-
-        notification[notificationType]({
-            message: 'Polling App',
-            description: description,
-        });
-    }
+    };
 
     render() {
         if (this.state.isLoading) {
@@ -77,12 +87,15 @@ class App extends Component {
             <React.Fragment>
                 <NavBar isAuthenticated={this.state.isAuthenticated}
                         currentUser={this.state.currentUser}
-                        onLogaout={this.handleLogout}/>
+                        onLogout={this.handleLogout}/>
                 <div className="app-content">
                     <Switch>
                         <Route exact path="/" component={Search}/>
                         <Route path="/register" component={Register}/>
                         <Route path="/login" render={(props) => <Login onLogin={this.handleLogin} {...props}/>}/>
+                        <Route path="/users/:username" render={(props) =>
+                            <Profile isAuthenticated={this.state.isAuthenticated}
+                                     currentUser={this.state.currentUser} {...props}/>}/>
                         <Route exact path="/seo" component={SEO}/>
                         <Route component={NotFound}/>
                     </Switch>
