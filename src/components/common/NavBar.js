@@ -36,6 +36,11 @@ class NavBar extends Component {
                 </Menu.Item>,
                 <Menu.Item key="/register">
                     <Link to="/register">Signup</Link>
+                </Menu.Item>,
+                <Menu.Item key="/profile" className="profile-menu">
+                    <ProfileDropdownMenu
+                        currentUser={this.props.currentUser}
+                        handleMenuClick={this.handleMenuClick}/>
                 </Menu.Item>
             ];
         }
@@ -60,16 +65,25 @@ const ProfileDropdownMenu = (props) => {
     const dropdownMenu = (
         <Menu onClick={props.handleMenuClick} className="profile-dropdown-menu">
             <Menu.Item key="user-info" className="dropdown-item" disabled>
-                <div className="user-full-name-info">
-                    {props.currentUser.name}
+                <div>
+                    dupa
                 </div>
-                <div className="username-info">
-                    @{props.currentUser.username}
-                </div>
+                {/*<div className="user-full-name-info">*/}
+                {/*{props.currentUser.name}*/}
+                {/*</div>*/}
+                {/*<div className="username-info">*/}
+                {/*@{props.currentUser.username}*/}
+                {/*</div>*/}
             </Menu.Item>
             <Menu.Divider/>
             <Menu.Item key="profile" className="dropdown-item">
                 <Link to={`#`}>Profile</Link>
+            </Menu.Item>
+            <Menu.Item key="seo" className="dropdown-item">
+                <Link to="/seo">SEO</Link>
+            </Menu.Item>
+            <Menu.Item key="seoResult" className="dropdown-item">
+                <Link to={"/seoResult"}>SEOResult</Link>
             </Menu.Item>
             <Menu.Item key="logout" className="dropdown-item">
                 Logout

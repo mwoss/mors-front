@@ -6,13 +6,14 @@ import {notification} from 'antd';
 
 
 import Search from "./components/search/Search"
-import SEO from "./components/seo/SEO";
+import SEORequest from "./components/seo/SEORequest";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register"
 import Footer from "./components/common/Footer";
 import LoadingIndicator from "./components/common/LoadingIndicator";
 import NotFound from "./components/common/NotFound";
 import NavBar from "./components/common/NavBar";
+import SEOResult from "./components/seo/SEOResult";
 
 
 class App extends Component {
@@ -77,13 +78,14 @@ class App extends Component {
             <React.Fragment>
                 <NavBar isAuthenticated={this.state.isAuthenticated}
                         currentUser={this.state.currentUser}
-                        onLogaout={this.handleLogout}/>
+                        onLogout={this.handleLogout}/>
                 <div className="app-content">
                     <Switch>
                         <Route exact path="/" component={Search}/>
                         <Route path="/register" component={Register}/>
                         <Route path="/login" render={(props) => <Login onLogin={this.handleLogin} {...props}/>}/>
-                        <Route exact path="/seo" component={SEO}/>
+                        <Route exact path="/seo" component={SEORequest}/>
+                        <Route exact path="/seoResult" component={SEOResult}/>
                         <Route component={NotFound}/>
                     </Switch>
                 </div>
