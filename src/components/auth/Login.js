@@ -30,20 +30,15 @@ class LoginForm extends Component {
                 const loginRequest = Object.assign({}, values);
                 login(loginRequest)
                     .then(response => {
-                        localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+                        localStorage.setItem(ACCESS_TOKEN, response.key);
                         this.props.onLogin();
                     }).catch(error => {
-                    if (error.status === 401) {
-                        notification.error({
-                            message: 'Polling App',
-                            description: 'Your Username or Password is incorrect. Please try again!'
-                        });
-                    } else {
-                        notification.error({
-                            message: 'Polling App',
-                            description: error.message || 'Sorry! Something went wrong. Please try again!'
-                        });
-                    }
+                    console.log(error);
+                    const error_msg = Object.values(error).map(e => e[0]).join("\n");
+                    notification.error({
+                        message: 'Mors SEO',
+                        description: error_msg || 'Sorry! Something went wrong. Please try again!'
+                    });
                 });
             }
         });
@@ -54,13 +49,13 @@ class LoginForm extends Component {
         return (
             <Form onSubmit={this.handleSubmit} className="login-form">
                 <FormItem>
-                    {getFieldDecorator('usernameOrEmail', {
+                    {getFieldDecorator('username', {
                         rules: [{required: true, message: 'Please input your username or email!'}],
                     })(
                         <Input
                             prefix={<Icon type="user"/>}
                             size="large"
-                            name="usernameOrEmail"
+                            name="username"
                             placeholder="Username or Email"/>
                     )}
                 </FormItem>
@@ -78,12 +73,11 @@ class LoginForm extends Component {
                 </FormItem>
                 <FormItem>
                     <Button type="primary" htmlType="submit" size="large" className="login-form-button">Login</Button>
-                    Or <Link to="/signup">register now!</Link>
+                    Or <Link to="/register">register now!</Link>
                 </FormItem>
             </Form>
         );
     }
 }
-
 
 export default Login;

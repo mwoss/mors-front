@@ -43,7 +43,7 @@
 }
 
 .profile-menu .user-full-name-info {
-    font-size: 17px;
+    font-size: 20px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.85);
 }
@@ -63,11 +63,7 @@
 }
 
 .nav-icon {
-    font-size: 20px;
-}
-
-.poll-icon {
-    margin-top: -4px;
+    font-size: 24px !important;
 }
 
 @media (max-width: 768px) {
