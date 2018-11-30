@@ -5,6 +5,7 @@ import NotFound from "../common/NotFound";
 import ServerError from "../common/ServerError";
 import {Avatar, Tabs} from 'antd';
 
+
 import "../../assets/styles/auth/profile.css";
 
 const TabPane = Tabs.TabPane;

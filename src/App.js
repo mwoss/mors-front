@@ -14,6 +14,8 @@ import LoadingIndicator from "./components/common/LoadingIndicator";
 import NotFound from "./components/common/NotFound";
 import NavBar from "./components/common/NavBar";
 import SEOResult from "./components/seo/SEOResult";
+import Profile from "./components/auth/Profile";
+import SEO from "./components/seo/SEO";
 
 
 class App extends Component {
@@ -97,8 +99,6 @@ class App extends Component {
                             <Profile isAuthenticated={this.state.isAuthenticated}
                                      currentUser={this.state.currentUser} {...props}/>}/>
                         <Route exact path="/seo" component={SEO}/>
-                        <Route exact path="/seo" component={SEORequest}/>
-                        <Route exact path="/seoResult" component={SEOResult}/>
                         <Route component={NotFound}/>
                     </Switch>
                 </div>

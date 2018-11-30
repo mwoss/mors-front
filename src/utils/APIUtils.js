@@ -79,7 +79,7 @@ export function getUserProfile(username) {
 
 export function seo(seoRequest) {
     return request({
-        url: API_BASE_URL + "/seo/optimization",
+        url: API_BASE_URL +API_VERSION+ "/seo/optimization",
         method: 'POST',
         body: JSON.stringify(seoRequest)
     });

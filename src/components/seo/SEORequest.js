@@ -29,7 +29,7 @@ class SEOForm extends Component {
         event.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                const seoRequest = Object.assign({}, values);
+                const seoRequest = Object.assign(values);
                 seo(seoRequest)
                     .then(
                         response => {
