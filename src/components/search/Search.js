@@ -34,12 +34,14 @@ class Search extends Component {
         if (term) {
             this.setState({isLoading: true});
             getSearchResult(term)
-                .then(data => this.setState({
+                .then(data => {
+                    console.log(data)
+                    this.setState({
                         query: data.query,
-                        urls: data.result.map(e => e[0]),
+                        urls: data.result,
                         isLoading: false
                     })
-                )
+        })
                 .catch(err => console.log('Error', err))
         }
     }

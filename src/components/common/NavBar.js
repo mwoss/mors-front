@@ -17,9 +17,8 @@ class NavBar extends Component {
         let menuItems;
         if (this.props.currentUser) {
             menuItems = [
-                // TODO: logged user should do sth sth
-                <Menu.Item key="/seo">
-                    <Link to="/seo">
+                <Menu.Item key="/home">
+                    <Link to="/">
                         <Icon type="home" className="nav-icon"/>
                     </Link>
                 </Menu.Item>,
@@ -61,7 +60,7 @@ const ProfileDropdownMenu = (props) => {
         <Menu onClick={props.handleMenuClick} className="profile-dropdown-menu">
             <Menu.Item key="user-info" className="dropdown-item" disabled>
                 <div className="user-full-name-info">
-                    {props.currentUser.name}
+                    {props.currentUser.fullname}
                 </div>
                 <div className="username-info">
                     @{props.currentUser.username}
@@ -90,6 +89,6 @@ const ProfileDropdownMenu = (props) => {
             </a>
         </Dropdown>
     );
-}
+};
 
 export default withRouter(NavBar);

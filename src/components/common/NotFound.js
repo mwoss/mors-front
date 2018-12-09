@@ -11,10 +11,10 @@ const NotFound = () => {
                 404
             </h1>
             <div className="desc">
-                The Page you're looking for was not found.
+                This page didn't exist. :(
             </div>
             <Link to="/">
-                <Button className="go-back-btn" type="primary" size="large">Go Back</Button>
+                <Button className="back-btn" type="primary" size="large">Go Back</Button>
             </Link>
         </div>
     );

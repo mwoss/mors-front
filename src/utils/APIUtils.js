@@ -6,7 +6,7 @@ const request = (options) => {
     });
 
     if (localStorage.getItem(ACCESS_TOKEN)) {
-        headers.append('Authorization', 'Token ' + localStorage.getItem(ACCESS_TOKEN))
+        headers.append('Authorization', 'JWT ' + localStorage.getItem(ACCESS_TOKEN))
     }
 
     const defaults = {headers: headers};
@@ -26,6 +26,7 @@ const request = (options) => {
         return e;
     }
 };
+
 
 export function getSearchResult(term) {
     return request({
@@ -61,7 +62,12 @@ export function logout(logoutRequest) {
 
 export function getCurrentUser() {
     if (!localStorage.getItem(ACCESS_TOKEN)) {
-        return Promise.reject("No access token set.");
+        return Promise.reject({message: "No access token set.", expired: false});
+    }
+    if (isAccessTokenExpired()) {
+        refreshToken().then(response => {
+            localStorage.setItem(ACCESS_TOKEN, response.token);
+        })
     }
 
     return request({
@@ -70,17 +76,33 @@ export function getCurrentUser() {
     });
 }
 
-export function getUserProfile(username) {
-    return request({
-        url: API_BASE_URL + API_VERSION + "/users/" + username,
-        method: 'GET'
-    });
-}
-
 export function seo(seoRequest) {
     return request({
-        url: API_BASE_URL +API_VERSION+ "/seo/optimization",
+        url: API_BASE_URL + API_VERSION + "/seo/optimization",
         method: 'POST',
         body: JSON.stringify(seoRequest)
     });
 }
+
+const refreshToken = () => {
+    return request({
+        url: API_BASE_URL + API_VERSION + "/auth/refresh/",
+        method: 'POST',
+        body: JSON.stringify({
+            token: localStorage.getItem(ACCESS_TOKEN)
+        })
+    })
+};
+
+const isAccessTokenExpired = () => {
+    const token_parts = localStorage.getItem(ACCESS_TOKEN).split(/\./);
+    try {
+        const token_decoded = JSON.parse(window.atob(token_parts[1]));
+        if (token_decoded && token_decoded.exp) {
+            return 1000 * token_decoded.exp - (new Date()).getTime() < 5
+        }
+    } catch (e) {
+        return true;
+    }
+    return true;
+};

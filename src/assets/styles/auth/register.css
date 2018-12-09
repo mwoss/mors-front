@@ -18,3 +18,7 @@
 .signup-form input {
     margin-bottom: 3px;
 }
+
+.ant-form-item {
+    margin-bottom: 20px;
+}

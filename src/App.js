@@ -4,19 +4,15 @@ import {getCurrentUser, logout} from "./utils/APIUtils";
 import {ACCESS_TOKEN} from "./constants/constants";
 import {notification} from 'antd';
 
-
 import Search from "./components/search/Search"
-import SEORequest from "./components/seo/SEORequest";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register"
 import Footer from "./components/common/Footer";
 import LoadingIndicator from "./components/common/LoadingIndicator";
 import NotFound from "./components/common/NotFound";
 import NavBar from "./components/common/NavBar";
-import SEOResult from "./components/seo/SEOResult";
 import Profile from "./components/auth/Profile";
 import SEO from "./components/seo/SEO";
-
 
 class App extends Component {
     state = {
@@ -26,50 +22,80 @@ class App extends Component {
     };
 
     componentDidMount() {
-        this.loadCurrentUser();
+        this.tryLoadCurrentUser();
     }
 
-    loadCurrentUser = () => {
-        this.setState({
-            isLoading: true
+    tryLoadCurrentUser = () => {
+        this.setState(() => {
+            return {
+                isLoading: true
+            }
         });
         getCurrentUser()
             .then(response => {
-                this.setState({
-                    currentUser: response,
-                    isAuthenticated: true,
-                    isLoading: false
-                });
+                if (response.status === 401) {
+                    notification.error({
+                        message: 'Mors SEO',
+                        description: 'Sorry! Your account could not be authorized properly'
+                    });
+                } else {
+                    this.setState(() => {
+                        return {
+                            currentUser: response,
+                            isAuthenticated: true,
+                            isLoading: false
+                        }
+                    });
+                }
             }).catch(error => {
-            this.setState({
-                isLoading: false
-            });
+            if (error.expired !== false) {
+                this.setState(() => {
+                    return {
+                        currentUser: null,
+                        isAuthenticated: false,
+                        isLoading: false
+                    }
+                });
+                localStorage.removeItem(ACCESS_TOKEN);
+                this.props.history.push("/");
+                notification.error({
+                    message: 'Mors SEO',
+                    description: "Your refresh token has expired. Log in again.",
+                });
+            } else {
+                this.setState(() => {
+                    return {
+                        isLoading: false
+                    }
+                });
+            }
         });
     };
 
     handleLogin = () => {
-        notification.success({
-            message: 'MORS browser',
-            description: "You're successfully logged in.",
-        });
-        this.loadCurrentUser();
-        this.props.history.push("/seo");
+        this.tryLoadCurrentUser();
+        if (this.state.isAuthenticated) {
+            this.props.history.push("/seo");
+            notification.success({
+                message: 'MORS browser',
+                description: "You're successfully logged in.",
+            });
+        }
     };
 
     handleLogout = () => {
-        const redirectTo = "/"
-        const notificationType = "success"
+        const redirectTo = "/";
         const logoutRequest = {key: ACCESS_TOKEN};
         logout(logoutRequest)
             .then(response => {
                 localStorage.removeItem(ACCESS_TOKEN);
-                this.setState({
-                    currentUser: null,
-                    isAuthenticated: false
+                this.setState(() => {
+                    return {
+                        currentUser: null,
+                    }
                 });
                 this.props.history.push(redirectTo);
-
-                notification[notificationType]({
+                notification.success({
                     message: 'Mors SEO',
                     description: response.detail,
                 });
@@ -87,8 +113,7 @@ class App extends Component {
         }
         return (
             <React.Fragment>
-                <NavBar isAuthenticated={this.state.isAuthenticated}
-                        currentUser={this.state.currentUser}
+                <NavBar currentUser={this.state.currentUser}
                         onLogout={this.handleLogout}/>
                 <div className="app-content">
                     <Switch>
@@ -96,8 +121,7 @@ class App extends Component {
                         <Route path="/register" component={Register}/>
                         <Route path="/login" render={(props) => <Login onLogin={this.handleLogin} {...props}/>}/>
                         <Route path="/users/:username" render={(props) =>
-                            <Profile isAuthenticated={this.state.isAuthenticated}
-                                     currentUser={this.state.currentUser} {...props}/>}/>
+                            <Profile currentUser={this.state.currentUser} {...props}/>}/>
                         <Route exact path="/seo" component={SEO}/>
                         <Route component={NotFound}/>
                     </Switch>

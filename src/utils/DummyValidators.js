@@ -37,12 +37,30 @@ export const validateEmail = (email) => {
     if (!email) {
         return {
             validateStatus: 'error',
-            errorMsg: 'Email may not be empty'
+            errorMsg: 'Email cannot be empty'
         }
     } else if (!EMAIL_REGEX.test(email)) {
         return {
             validateStatus: 'error',
             errorMsg: 'Email not valid'
+        }
+    }
+    return {
+        validateStatus: "success",
+        errorMsg: null
+    }
+};
+
+export const validateName = (name) => {
+    if (!name) {
+        return {
+            validateStatus: 'error',
+            errorMsg: 'Real fullname cannot be empty'
+        }
+    } else if (name.split(" ").length < 2) {
+        return {
+            validateStatus: 'error',
+            errorMsg: 'Name should contains first and last fullname'
         }
     }
     return {

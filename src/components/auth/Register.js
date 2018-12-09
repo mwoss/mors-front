@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Form, Input, Button, notification} from 'antd';
 import {Link} from 'react-router-dom';
 import {register} from '../../utils/APIUtils';
-import {validateEmail, validateUsername, validatePassword} from "../../utils/DummyValidators";
+import {validateEmail, validateUsername, validatePassword, validateName} from "../../utils/DummyValidators";
 import {passwordEqualityState} from "../../utils/StateUtils"
 
 import "../../assets/styles/auth/register.css";
@@ -13,6 +13,9 @@ class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            fullname: {
+                value: ''
+            },
             username: {
                 value: ''
             },
@@ -45,6 +48,7 @@ class Register extends Component {
         event.preventDefault();
 
         const signupRequest = {
+            fullname: this.state.fullname.value,
             email: this.state.email.value,
             username: this.state.username.value,
             password1: this.state.password1.value,
@@ -67,7 +71,8 @@ class Register extends Component {
     };
 
     isFormInvalid = () => {
-        return !(this.state.username.validateStatus === 'success' &&
+        return !(this.state.fullname.validateStatus === 'success' &&
+            this.state.username.validateStatus === 'success' &&
             this.state.email.validateStatus === 'success' &&
             this.state.password1.validateStatus === 'success' &&
             this.state.password2.validateStatus === 'success'
@@ -80,6 +85,18 @@ class Register extends Component {
                 <h1 className="page-title">Sign Up</h1>
                 <div className="signup-content">
                     <Form onSubmit={this.handleSubmit} className="signup-form">
+                        <FormItem
+                            hasFeedback
+                            validateStatus={this.state.fullname.validateStatus}
+                            help={this.state.fullname.errorMsg}>
+                            <Input
+                                size="large"
+                                name="fullname"
+                                autoComplete="off"
+                                placeholder="Input your real first and last name"
+                                value={this.state.fullname.value}
+                                onChange={(event) => this.handleInputChange(event, validateName)}/>
+                        </FormItem>
                         <FormItem hasFeedback
                                   validateStatus={this.state.username.validateStatus}
                                   help={this.state.username.errorMsg}>

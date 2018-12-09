@@ -30,10 +30,9 @@ class LoginForm extends Component {
                 const loginRequest = Object.assign({}, values);
                 login(loginRequest)
                     .then(response => {
-                        localStorage.setItem(ACCESS_TOKEN, response.key);
+                        localStorage.setItem(ACCESS_TOKEN, response.token);
                         this.props.onLogin();
                     }).catch(error => {
-                    console.log(error);
                     const error_msg = Object.values(error).map(e => e[0]).join("\n");
                     notification.error({
                         message: 'Mors SEO',

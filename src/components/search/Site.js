@@ -12,22 +12,20 @@ const Site = (props) => {
     return (
         <div>
             <div>
-                <a href={props.site}>
-                    <h5>TITLE FROM PROPS - MONGO</h5>
+                <a href={props.site.url}>
+                    <h5>{props.site.tittle}</h5>
                 </a>
-                <p className="site-link">{cutURL(props.site)}</p>
+                <p className="site-link">{cutURL(props.site.url)}</p>
             </div>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras quis molestie magna.
-                Maecenas varius quis ex eu cursus. Vivamus pretium a nulla vitae fringilla. Praesent sit amet libero
-                ante.
-            </p>
+            <p>{props.site.description}...</p>
         </div>
     )
 };
 
 Site.propTypes = {
-    site: PropTypes.string,
+    url: PropTypes.string,
+    tittle: PropTypes.string,
+    description: PropTypes.string,
 };
 
 export default Site;
