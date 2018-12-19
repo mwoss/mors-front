@@ -61,6 +61,31 @@ export function logout(logoutRequest) {
 }
 
 export function getCurrentUser() {
+    checkUserToken();
+    return request({
+        url: API_BASE_URL + API_VERSION + "/auth/user/",
+        method: 'GET'
+    });
+}
+
+export function seo(seoRequest) {
+    checkUserToken();
+    return request({
+        url: API_BASE_URL + API_VERSION + "/seo/optimization",
+        method: 'POST',
+        body: JSON.stringify(seoRequest)
+    });
+}
+
+export function seoHistory() {
+    checkUserToken();
+    return request({
+        url: API_BASE_URL + API_VERSION + "/seo/history",
+        method: 'GET'
+    })
+}
+
+const checkUserToken = () => {
     if (!localStorage.getItem(ACCESS_TOKEN)) {
         return Promise.reject({message: "No access token set.", expired: false});
     }
@@ -69,20 +94,7 @@ export function getCurrentUser() {
             localStorage.setItem(ACCESS_TOKEN, response.token);
         })
     }
-
-    return request({
-        url: API_BASE_URL + API_VERSION + "/auth/user/",
-        method: 'GET'
-    });
-}
-
-export function seo(seoRequest) {
-    return request({
-        url: API_BASE_URL + API_VERSION + "/seo/optimization",
-        method: 'POST',
-        body: JSON.stringify(seoRequest)
-    });
-}
+};
 
 const refreshToken = () => {
     return request({
@@ -93,15 +105,17 @@ const refreshToken = () => {
         })
     })
 };
-
 const isAccessTokenExpired = () => {
-    const token_parts = localStorage.getItem(ACCESS_TOKEN).split(/\./);
-    try {
-        const token_decoded = JSON.parse(window.atob(token_parts[1]));
-        if (token_decoded && token_decoded.exp) {
-            return 1000 * token_decoded.exp - (new Date()).getTime() < 5
+    if (localStorage.getItem(ACCESS_TOKEN)) {
+        const token_parts = localStorage.getItem(ACCESS_TOKEN).split(/\./);
+        try {
+            const token_decoded = JSON.parse(window.atob(token_parts[1]));
+            if (token_decoded && token_decoded.exp) {
+                return 1000 * token_decoded.exp - (new Date()).getTime() < 5
+            }
+        } catch (e) {
+            return true;
         }
-    } catch (e) {
         return true;
     }
     return true;

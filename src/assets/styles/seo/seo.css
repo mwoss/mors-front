@@ -1,9 +1,12 @@
-.seo-container {
-    max-width: 500px;
-    margin: 40px auto;
+.app-content{
+    margin-top: 100px;
 }
 
-.seo-result-container{
-    max-width: 630px;
-    margin: 40px auto;
+.seo-container {
+    max-width: 60vh;
+    margin: 140px auto;
+}
+
+.seo-submit-button {
+    width: 100%;
 }

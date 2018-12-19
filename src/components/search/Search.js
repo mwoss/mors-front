@@ -35,7 +35,6 @@ class Search extends Component {
             this.setState({isLoading: true});
             getSearchResult(term)
                 .then(data => {
-                    console.log(data)
                     this.setState({
                         query: data.query,
                         urls: data.result,

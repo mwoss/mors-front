@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Route, withRouter, Switch} from 'react-router-dom';
+import {Route, withRouter, Switch, Redirect} from 'react-router-dom';
 import {getCurrentUser, logout} from "./utils/APIUtils";
 import {ACCESS_TOKEN} from "./constants/constants";
 import {notification} from 'antd';
@@ -26,10 +26,8 @@ class App extends Component {
     }
 
     tryLoadCurrentUser = () => {
-        this.setState(() => {
-            return {
-                isLoading: true
-            }
+        this.setState({
+            isLoading: true
         });
         getCurrentUser()
             .then(response => {
@@ -39,22 +37,18 @@ class App extends Component {
                         description: 'Sorry! Your account could not be authorized properly'
                     });
                 } else {
-                    this.setState(() => {
-                        return {
-                            currentUser: response,
-                            isAuthenticated: true,
-                            isLoading: false
-                        }
-                    });
+                    this.setState({
+                        currentUser: response,
+                        isAuthenticated: true,
+                        isLoading: false,
+                    }, () => this.props.history.push("/seo"));
                 }
             }).catch(error => {
             if (error.expired !== false) {
-                this.setState(() => {
-                    return {
-                        currentUser: null,
-                        isAuthenticated: false,
-                        isLoading: false
-                    }
+                this.setState({
+                    currentUser: null,
+                    isAuthenticated: false,
+                    isLoading: false
                 });
                 localStorage.removeItem(ACCESS_TOKEN);
                 this.props.history.push("/");
@@ -63,10 +57,8 @@ class App extends Component {
                     description: "Your refresh token has expired. Log in again.",
                 });
             } else {
-                this.setState(() => {
-                    return {
-                        isLoading: false
-                    }
+                this.setState({
+                    isLoading: false
                 });
             }
         });
@@ -75,7 +67,6 @@ class App extends Component {
     handleLogin = () => {
         this.tryLoadCurrentUser();
         if (this.state.isAuthenticated) {
-            this.props.history.push("/seo");
             notification.success({
                 message: 'MORS browser',
                 description: "You're successfully logged in.",
@@ -89,10 +80,9 @@ class App extends Component {
         logout(logoutRequest)
             .then(response => {
                 localStorage.removeItem(ACCESS_TOKEN);
-                this.setState(() => {
-                    return {
-                        currentUser: null,
-                    }
+                this.setState({
+                    currentUser: null,
+
                 });
                 this.props.history.push(redirectTo);
                 notification.success({
@@ -122,7 +112,8 @@ class App extends Component {
                         <Route path="/login" render={(props) => <Login onLogin={this.handleLogin} {...props}/>}/>
                         <Route path="/users/:username" render={(props) =>
                             <Profile currentUser={this.state.currentUser} {...props}/>}/>
-                        <Route exact path="/seo" component={SEO}/>
+                        <Route exact path="/seo" render={(props) => this.state.isAuthenticated ? <SEO {...props}/> :
+                            <Redirect to={{pathname: '/login'}}/>}/>
                         <Route component={NotFound}/>
                     </Switch>
                 </div>
