@@ -61,3 +61,8 @@
 .user-summary .user-joined {
     margin-top: 5px;
 }
+
+.user-data-details {
+    width: 75%;
+    margin: 0 auto;
+}

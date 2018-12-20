@@ -11,7 +11,7 @@ const SEO = () => {
     const AntWrappedSEOForm = Form.create()(SEOForm);
     return (
         <div className="seo-container">
-            <h1 className="page-title">Search Engine Optimization</h1>
+            <h1 className="page-title">SEO Booster</h1>
             <div>
                 <AntWrappedSEOForm/>
             </div>
