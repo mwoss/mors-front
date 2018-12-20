@@ -1,0 +1,18 @@
+.links {
+    margin: 40px 10vw 40px;
+}
+
+.header {
+    margin-top: 20px;
+    color: #595959;
+    text-align: center;
+    vertical-align: middle;
+}
+
+@media only screen and (max-width: 991px) {
+    .links {
+        margin-top: 40px;
+        margin-left: 8vw;
+        margin-right: 8vw;
+    }
+}
